@@ -85,6 +85,14 @@ class TransactionController extends Controller
     public function show($id)
     {
         //
+
+        $transaction = Transaction::findOrFail($id);
+        $respons =[
+            "message" =>"data per id",
+            "data" =>$transaction
+        ];
+
+        return response()->json($respons,Response::HTTP_OK);
     }
 
     /**
@@ -143,5 +151,20 @@ class TransactionController extends Controller
     public function destroy($id)
     {
         //
+        $transaction = Transaction::findOrFail($id);
+        $response =[
+            "message" => "data sudah di hapus"
+        ];
+        try {
+            //code...
+            $transaction->delete();
+            return response()->json($response,Response::HTTP_OK);
+        } catch (QueryException $e)
+         {
+            //throw $th;
+            return response()->json([
+                "message"=>"data gagal dihapus ".$e->errorInfo
+            ]);
+        }
     }
 }
